@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .chat-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .chat-header {
+        background-color: #0078d7;
+        color: white;
+        padding: 15px;
+        text-align: center;
+      }
+      .chat-messages {
+        height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+      }
+      .message {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+      }
+      .user-message {
+        background-color: #dcf8c6;
+        margin-left: auto;
+      }
+      .bot-message {
+        background-color: #f0f0f0;
+      }
+      .chat-input {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid #e0e0e0;
+      }
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      .chat-input button {
+        padding: 10px 15px;
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .article-card {
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        background-color: white;
+      }
+      .article-card h3 {
+        margin-top: 0;
+        margin-bottom: 5px;
+      }
+      .article-card p {
+        margin: 5px 0;
+      }
+      .article-card a {
+        color: #0078d7;
+        text-decoration: none;
+      }
+      .article-card a:hover {
+        text-decoration: underline;
+      }
+      .article-image {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-top: 10px;
+      }
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+      }
+      .footer a {
+        color: #0078d7;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>News Chatbot</h2>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message bot-message">
+          Hello! I'm your news assistant. Ask me about any news topic, and I'll
+          find relevant articles for you.
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Ask me about news..." />
+        <button id="send-button">Send</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        Powered by <a href="https://newsapi.org" target="_blank">NewsAPI.org</a>
+      </p>
+      <p>
+        <a href="/static/newsletter.html">Subscribe to Newsletter</a> |
+        <a href="/static/email-config.html">Email Configuration</a> |
+        <a href="/docs" target="_blank">API Documentation</a>
+      </p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatMessages = document.getElementById("chat-messages");
+        const userInput = document.getElementById("user-input");
+        const sendButton = document.getElementById("send-button");
+
+        function addMessage(message, isUser) {
+          const messageDiv = document.createElement("div");
+          messageDiv.classList.add("message");
+          messageDiv.classList.add(isUser ? "user-message" : "bot-message");
+
+          if (isUser) {
+            messageDiv.textContent = message;
+          } else {
+            // Split the bot message to separate the summary from article listings
+            const parts = message.answer.split("\n\n");
+            const summary = document.createElement("div");
+            summary.textContent = parts[0];
+            messageDiv.appendChild(summary);
+
+            // Add the article cards if there are any
+            if (message.articles && message.articles.length > 0) {
+              message.articles.forEach((article) => {
+                const articleCard = document.createElement("div");
+                articleCard.classList.add("article-card");
+
+                const title = document.createElement("h3");
+                const titleLink = document.createElement("a");
+                titleLink.href = article.url;
+                titleLink.target = "_blank";
+                titleLink.textContent = article.title;
+                title.appendChild(titleLink);
+                articleCard.appendChild(title);
+
+                const source = document.createElement("p");
+                source.textContent = `Source: ${
+                  article.source.name || "Unknown"
+                }`;
+                articleCard.appendChild(source);
+
+                if (article.description) {
+                  const description = document.createElement("p");
+                  description.textContent = article.description;
+                  articleCard.appendChild(description);
+                }
+
+                if (article.urlToImage) {
+                  const image = document.createElement("img");
+                  image.src = article.urlToImage;
+                  image.alt = article.title;
+                  image.classList.add("article-image");
+                  articleCard.appendChild(image);
+                }
+
+                messageDiv.appendChild(articleCard);
+              });
+            }
+          }
+
+          chatMessages.appendChild(messageDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+          const message = userInput.value.trim();
+          if (message) {
+            addMessage(message, true);
+            userInput.value = "";
+
+            // Add loading indicator
+            const loadingDiv = document.createElement("div");
+            loadingDiv.classList.add("message", "bot-message");
+            loadingDiv.textContent = "Searching for news...";
+            chatMessages.appendChild(loadingDiv);
+
+            // Call the API
+            fetch("/chat", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ query: message }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Remove loading indicator
+                chatMessages.removeChild(loadingDiv);
+                // Add the bot response
+                addMessage(data, false);
+              })
+              .catch((error) => {
+                // Remove loading indicator
+                chatMessages.removeChild(loadingDiv);
+
+                const errorDiv = document.createElement("div");
+                errorDiv.classList.add("message", "bot-message");
+                errorDiv.textContent =
+                  "Sorry, I encountered an error while searching for news. Please try again.";
+                chatMessages.appendChild(errorDiv);
+                console.error("Error:", error);
+              });
+          }
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+        userInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

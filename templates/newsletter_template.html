@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily News Digest</title>
+    <style>
+      /* Base styles */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #333;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+      }
+
+      /* Header styling */
+      .header {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: bold;
+        color: #2c3e50;
+        letter-spacing: 1px;
+      }
+
+      .date {
+        color: #7f8c8d;
+        font-style: italic;
+        margin-top: 10px;
+      }
+
+      /* Section styling */
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section-title {
+        color: #2980b9;
+        font-size: 24px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+
+      /* Article styling */
+      .article {
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+      }
+
+      .article:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .article-title {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .article-title a {
+        color: #34495e;
+        text-decoration: none;
+      }
+
+      .article-title a:hover {
+        color: #3498db;
+        text-decoration: underline;
+      }
+
+      .article-description {
+        color: #555;
+        margin-bottom: 15px;
+      }
+
+      .article-meta {
+        color: #95a5a6;
+        font-size: 14px;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 10px;
+      }
+
+      /* Trending section styling */
+      .trending {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+      }
+
+      .trending-title {
+        color: white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .trending .article {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .trending .article-title a {
+        color: white;
+      }
+
+      .trending .article-description {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .trending .article-meta {
+        color: rgba(255, 255, 255, 0.6);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Footer styling */
+      .footer {
+        text-align: center;
+        padding: 20px 0;
+        color: #7f8c8d;
+        font-size: 14px;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 30px;
+      }
+
+      .footer a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+
+        .article {
+          padding: 15px;
+        }
+
+        .section-title {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">Daily News Digest</div>
+      <div class="date">{{ date }}</div>
+    </div>
+
+    <div class="trending section">
+      <h2 class="section-title trending-title">Trending Topics</h2>
+
+      {% for article in trending_topics %}
+      <div class="article">
+        <h3 class="article-title">
+          <a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+        </h3>
+        {% if article.description %}
+        <div class="article-description">{{ article.description }}</div>
+        {% endif %}
+        <div class="article-meta">
+          Source: {{ article.source.name }} | {{
+          article.publishedAt.split('T')[0] }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% for category, articles in news_by_category.items() %}
+    <div class="section">
+      <h2 class="section-title">{{ category|capitalize }}</h2>
+
+      {% for article in articles %}
+      <div class="article">
+        <h3 class="article-title">
+          <a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+        </h3>
+        {% if article.description %}
+        <div class="article-description">{{ article.description }}</div>
+        {% endif %}
+        <div class="article-meta">
+          Source: {{ article.source.name }} | {{
+          article.publishedAt.split('T')[0] }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div class="footer">
+      <p>
+        This newsletter is powered by
+        <a href="http://newsapi.org">NewsAPI.org</a>
+      </p>
+      <p>© {{ date.split()[2] }} Daily News Digest. All rights reserved.</p>
+    </div>
+  </body>
+</html>

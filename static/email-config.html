@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Configuration</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .header p {
+        margin: 1rem 0 0;
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      .note {
+        background-color: #f8f9fa;
+        border-left: 4px solid #3498db;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .note strong {
+        color: #333;
+      }
+
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: #2980b9;
+      }
+
+      .success-message {
+        background-color: #27ae60;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .error-message {
+        background-color: #e74c3c;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .footer {
+        background-color: #34495e;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+      }
+
+      .footer a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .nav-links {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .nav-links a {
+        color: #3498db;
+        text-decoration: none;
+        margin: 0 1rem;
+      }
+
+      .nav-links a:hover {
+        text-decoration: underline;
+      }
+
+      .steps {
+        margin: 1.5rem 0;
+      }
+
+      .steps ol {
+        padding-left: 1.5rem;
+      }
+
+      .steps li {
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Email Configuration</h1>
+      <p>Set up your Gmail account to send newsletters</p>
+    </div>
+
+    <div class="container">
+      <div class="note">
+        <strong>Note:</strong> For security reasons, Gmail requires you to use
+        an App Password instead of your regular password. This is a 16-character
+        code that gives our app permission to access your Gmail account.
+      </div>
+
+      <div class="steps">
+        <h3>How to create an App Password:</h3>
+        <ol>
+          <li>
+            Go to
+            <a href="https://myaccount.google.com/apppasswords" target="_blank"
+              >Google App Passwords</a
+            >
+          </li>
+          <li>Sign in with your Google account</li>
+          <li>In the "Select app" dropdown, choose "Other (Custom name)"</li>
+          <li>Enter "News Newsletter" as the name</li>
+          <li>Click "Generate"</li>
+          <li>Copy the 16-character code that appears (without spaces)</li>
+          <li>Use that code as your App Password below</li>
+        </ol>
+      </div>
+
+      <form id="email-test-form">
+        <div class="form-group">
+          <label for="gmail-user">Gmail Address</label>
+          <input
+            type="email"
+            id="gmail-user"
+            name="gmail-user"
+            required
+            placeholder="your-email@gmail.com"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="gmail-password">Gmail App Password</label>
+          <input
+            type="password"
+            id="gmail-password"
+            name="gmail-password"
+            required
+            placeholder="Your 16-character app password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="test-email">Test Recipient Email</label>
+          <input
+            type="email"
+            id="test-email"
+            name="test-email"
+            required
+            placeholder="Where to send the test email"
+          />
+        </div>
+
+        <div class="form-group">
+          <button type="submit">Test Connection</button>
+        </div>
+      </form>
+
+      <div class="success-message" id="success-message">
+        Test email sent successfully! Check your inbox to verify.
+      </div>
+
+      <div class="error-message" id="error-message">
+        Failed to send test email. Please check your credentials and try again.
+      </div>
+
+      <div class="nav-links">
+        <a href="/">Back to News Chat</a> |
+        <a href="/static/newsletter.html">Newsletter Subscription</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        &copy; 2023 News Digest API. Powered by
+        <a href="https://newsapi.org">NewsAPI.org</a>
+      </p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const emailTestForm = document.getElementById("email-test-form");
+        const successMessage = document.getElementById("success-message");
+        const errorMessage = document.getElementById("error-message");
+
+        emailTestForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const gmailUser = document.getElementById("gmail-user").value;
+          const gmailPassword = document.getElementById("gmail-password").value;
+          const testEmail = document.getElementById("test-email").value;
+
+          // Change button to loading state
+          const submitButton = emailTestForm.querySelector(
+            'button[type="submit"]'
+          );
+          const originalText = submitButton.textContent;
+          submitButton.textContent = "Testing...";
+          submitButton.disabled = true;
+
+          // Hide any previous messages
+          successMessage.style.display = "none";
+          errorMessage.style.display = "none";
+
+          fetch("/test-email-connection", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: testEmail,
+              gmail_user: gmailUser,
+              gmail_password: gmailPassword,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Reset button
+              submitButton.textContent = originalText;
+              submitButton.disabled = false;
+
+              if (data.success) {
+                successMessage.style.display = "block";
+                errorMessage.style.display = "none";
+              } else {
+                errorMessage.textContent = data.message;
+                errorMessage.style.display = "block";
+                successMessage.style.display = "none";
+              }
+            })
+            .catch((error) => {
+              // Reset button
+              submitButton.textContent = originalText;
+              submitButton.disabled = false;
+
+              errorMessage.textContent = "Network error: " + error.message;
+              errorMessage.style.display = "block";
+              successMessage.style.display = "none";
+              console.error("Error:", error);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

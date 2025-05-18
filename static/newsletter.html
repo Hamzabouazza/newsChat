@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter Subscription</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #3498db, #2c3e50);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .header p {
+        margin: 1rem 0 0;
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
+
+      .categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+
+      .category-checkbox {
+        display: flex;
+        align-items: center;
+        background-color: #f9f9f9;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .category-checkbox:hover {
+        background-color: #eee;
+      }
+
+      .category-checkbox input {
+        margin-right: 0.5rem;
+      }
+
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      button:hover {
+        background-color: #2980b9;
+      }
+
+      .preview-btn {
+        background-color: #f39c12;
+        margin-left: 1rem;
+      }
+
+      .preview-btn:hover {
+        background-color: #e67e22;
+      }
+
+      .success-message {
+        background-color: #27ae60;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .error-message {
+        background-color: #e74c3c;
+        color: white;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .preview-container {
+        margin-top: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        max-height: 500px;
+        overflow-y: auto;
+        display: none;
+      }
+
+      .footer {
+        background-color: #34495e;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+      }
+
+      .footer a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .nav-links {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .nav-links a {
+        color: #3498db;
+        text-decoration: none;
+        margin: 0 1rem;
+      }
+
+      .nav-links a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>News Digest Newsletter</h1>
+      <p>Subscribe to receive daily news updates curated just for you.</p>
+    </div>
+
+    <div class="container">
+      <form id="subscribe-form">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="your-email@example.com"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Your Name (Optional)</label>
+          <input type="text" id="name" name="name" placeholder="John Doe" />
+        </div>
+
+        <div class="form-group">
+          <label>News Categories</label>
+          <div class="categories">
+            <label class="category-checkbox">
+              <input
+                type="checkbox"
+                name="category"
+                value="technology"
+                checked
+              />
+              Technology
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="business" checked />
+              Business
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="health" checked />
+              Health
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="science" />
+              Science
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="entertainment" />
+              Entertainment
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="sports" />
+              Sports
+            </label>
+            <label class="category-checkbox">
+              <input type="checkbox" name="category" value="general" />
+              General
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit">Subscribe Now</button>
+          <button type="button" class="preview-btn" id="preview-btn">
+            Preview Newsletter
+          </button>
+        </div>
+      </form>
+
+      <div class="success-message" id="success-message">
+        Thanks for subscribing! You will now receive daily news updates based on
+        your preferences.
+      </div>
+
+      <div class="error-message" id="error-message">
+        There was an error processing your subscription. Please try again.
+      </div>
+
+      <div class="preview-container" id="preview-container">
+        <h3>Newsletter Preview</h3>
+        <div id="preview-content"></div>
+      </div>
+
+      <div class="nav-links">
+        <a href="/">Back to News Chat</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        &copy; 2023 News Digest API. Powered by
+        <a href="https://newsapi.org">NewsAPI.org</a>
+      </p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const subscribeForm = document.getElementById("subscribe-form");
+        const successMessage = document.getElementById("success-message");
+        const errorMessage = document.getElementById("error-message");
+        const previewBtn = document.getElementById("preview-btn");
+        const previewContainer = document.getElementById("preview-container");
+        const previewContent = document.getElementById("preview-content");
+
+        subscribeForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const name = document.getElementById("name").value;
+          const categoryCheckboxes = document.querySelectorAll(
+            'input[name="category"]:checked'
+          );
+          const preferences = Array.from(categoryCheckboxes).map(
+            (cb) => cb.value
+          );
+
+          if (preferences.length === 0) {
+            alert("Please select at least one news category.");
+            return;
+          }
+
+          fetch("/subscribe", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              name: name,
+              preferences: preferences,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              successMessage.style.display = "block";
+              errorMessage.style.display = "none";
+              subscribeForm.reset();
+              setTimeout(() => {
+                successMessage.style.display = "none";
+              }, 5000);
+            })
+            .catch((error) => {
+              errorMessage.style.display = "block";
+              successMessage.style.display = "none";
+              console.error("Error:", error);
+            });
+        });
+
+        previewBtn.addEventListener("click", function () {
+          const categoryCheckboxes = document.querySelectorAll(
+            'input[name="category"]:checked'
+          );
+          const categories = Array.from(categoryCheckboxes).map(
+            (cb) => cb.value
+          );
+
+          if (categories.length === 0) {
+            alert("Please select at least one news category to preview.");
+            return;
+          }
+
+          // Show a loading state
+          previewContainer.style.display = "block";
+          previewContent.innerHTML = "<p>Loading preview...</p>";
+
+          fetch("/newsletter/preview", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              categories: categories,
+              country: "us",
+            }),
+          })
+            .then((response) => response.text())
+            .then((html) => {
+              previewContent.innerHTML = html;
+            })
+            .catch((error) => {
+              previewContent.innerHTML =
+                "<p>Error loading preview. Please try again.</p>";
+              console.error("Error:", error);
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
